@@ -1,23 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const [buttonValue, setButtonValue] = React.useState('Start');
+  const [seconds, setSeconds] = React.useState(0);
+  const [intervalId, setIntervalId] = React.useState();
+
+  const startClick = () => {
+    if(buttonValue === 'Start'){
+      setButtonValue('Pause');
+      let interval = setInterval(() => setSeconds(seconds => seconds +1),1000);
+      setIntervalId(interval);
+    }else{
+      clearInterval(intervalId);
+      setButtonValue('Start');
+    }
+  }
+
+  const resetClick = () => {
+    clearInterval(intervalId);
+    setSeconds(0);
+    setButtonValue('Start');
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {seconds}s
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={startClick}> {buttonValue}</button>
+        <button onClick={resetClick}> reset</button>
       </header>
     </div>
   );
